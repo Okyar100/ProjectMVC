@@ -1,0 +1,67 @@
+@model UserEditViewModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<div asp-validation-summary="ModelOnly" class="field-error"></div>
+
+<div class="form-grid">
+    <div class="form-group">
+        <label asp-for="IstifadeciAdi"></label>
+        <input asp-for="IstifadeciAdi" />
+        <span asp-validation-for="IstifadeciAdi" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Ad"></label>
+        <input asp-for="Ad" />
+        <span asp-validation-for="Ad" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Soyad"></label>
+        <input asp-for="Soyad" />
+        <span asp-validation-for="Soyad" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FinKod"></label>
+        <input asp-for="FinKod" maxlength="7" />
+        <span asp-validation-for="FinKod" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="DogumTarixi"></label>
+        <input asp-for="DogumTarixi" />
+    </div>
+    <div class="form-group">
+        <label asp-for="SobeId"></label>
+        <select asp-for="SobeId" asp-items="Model.Sobeler.Select(s => new SelectListItem { Value = s.Id.ToString(), Text = s.Ad })">
+            <option value="">-- seçin --</option>
+        </select>
+        <span asp-validation-for="SobeId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="VezifeId"></label>
+        <select asp-for="VezifeId" asp-items="Model.Vezifeler.Select(v => new SelectListItem { Value = v.Id.ToString(), Text = v.Ad })">
+            <option value="">-- seçin --</option>
+        </select>
+        <span asp-validation-for="VezifeId" class="field-error"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Telefon"></label>
+        <input asp-for="Telefon" />
+    </div>
+    <div class="form-group">
+        <label asp-for="DaxiliNomre"></label>
+        <input asp-for="DaxiliNomre" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Sifre"></label>
+        <input asp-for="Sifre"/>
+    </div>
+</div>
+
+<div class="form-actions">
+    <a class="btn btn-secondary" asp-action="Index">Bağla</a>
+    <button type="submit" class="btn btn-success">&#128190; Yadda saxla</button>
+</div>

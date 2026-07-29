@@ -1,0 +1,129 @@
+@model List<UserListItemViewModel>
+@if (ViewBag.CanBaxis != true)
+{
+    <div class="panel" style="text-align:center; padding:50px 20px;">
+        <div style="font-size:40px; margin-bottom:10px;">🔒</div>
+        <h3 style="margin:0 0 8px 0;">Sizə hələ heç bir icazə verilməyib</h3>
+        <p style="color:#8993ab; margin:0;">Zəhmət olmasa sistem administratoru ilə əlaqə saxlayın.</p>
+    </div>
+    return;
+}
+@{
+    ViewData["Title"] = "İstifadəçilər";
+}
+
+<div class="toolbar">
+    @if (ViewBag.CanYeni == true)
+    {
+        <a class="btn btn-primary" asp-action="Create">+ Yeni</a>
+    }
+
+    @if (User.IsInRole("Admin"))
+    {
+        <button class="btn btn-delete" type="button" onclick="deleteSelected()">&#128465; Sil</button>
+    }
+    
+    @if (ViewBag.CanDuzelis == true)
+    {
+        <button class="btn btn-success" type="button" onclick="editSelected()">&#9998; Düzəliş</button>
+    }
+
+    @if (ViewBag.CanIcazeler == true)
+    {
+        <button class="btn btn-danger" type="button" onclick="permissionsSelected()">&#128683; İcazələr</button>
+    }
+
+    @if (ViewBag.CanAktivDeaktiv == true)
+    {
+        <button class="btn btn-purple" type="button" onclick="toggleSelected()">&#9679; Aktiv/Deaktiv</button>
+    }
+</div>
+
+<div class="table-wrap">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>№ &uarr;</th>
+                <th>İstifadəçi adı</th>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>FİN kod</th>
+                <th>Doğum tarixi</th>
+                <th>Şöbə</th>
+                <th>Vəzifə</th>
+                <th>Telefon</th>
+                <th>Daxili nömrə</th>
+                <th>Email</th>
+                <th>Yaradılma tarixi</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int sira = 1; }
+            @if (!Model.Any())
+            {
+                <tr><td colspan="14" class="empty-state">📭 Hələ heç bir istifadəçi yaradılmayıb. "+ Yeni" düyməsi ilə başlayın.</td></tr>
+            }
+            @foreach (var u in Model)
+            {
+                <tr>
+                    <td><input type="radio" name="selectedUser" class="row-select" value="@u.Id" data-edit="@Url.Action("Edit", new { id = u.Id })" data-perm="@Url.Action("Permissions", new { id = u.Id })" data-toggle="@Url.Action("ToggleActive", new { id = u.Id })" data-delete="@Url.Action("Delete", new { id = u.Id })" /></td>
+                    <td>@(sira++)</td>
+                    <td>@u.IstifadeciAdi</td>
+                    <td>@u.Ad</td>
+                    <td>@u.Soyad</td>
+                    <td>@u.FinKod</td>
+                    <td>@(u.DogumTarixi?.ToString("dd.MM.yyyy") ?? "-")</td>
+                    <td>@(u.Sobe ?? "-")</td>
+                    <td>@(u.Vezife ?? "-")</td>
+                    <td>@(u.Telefon ?? "-")</td>
+                    <td>@(u.DaxiliNomre ?? "-")</td>
+                    <td>@u.Email</td>
+                    <td>@u.YaradilmaTarixi.ToString("dd.MM.yyyy")</td>
+                    <td>
+                        <span class="status-pill @(u.Aktivdir ? "status-active" : "status-inactive")">
+                            @(u.Aktivdir ? "Aktiv" : "Deaktiv")
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<form id="toggleForm" method="post" style="display:none;">
+    @Html.AntiForgeryToken()
+</form>
+
+@section Scripts {
+<script>
+    function getSelected() {
+        var el = document.querySelector('input[name="selectedUser"]:checked');
+        if (!el) { alert('Zəhmət olmasa əvvəlcə cədvəldən bir istifadəçi seçin.'); return null; }
+        return el;
+    }
+    function editSelected() {
+        var el = getSelected(); if (!el) return;
+        window.location.href = el.dataset.edit;
+    }
+    function permissionsSelected() {
+        var el = getSelected(); if (!el) return;
+        window.location.href = el.dataset.perm;
+    }
+        function toggleSelected() {
+            var el = getSelected(); if (!el) return;
+            if (!confirm('Bu istifadəçinin statusunu dəyişmək istədiyinizə əminsiniz?')) return;
+            var form = document.getElementById('toggleForm');
+            form.action = el.dataset.toggle;
+            form.submit();
+        }
+        function deleteSelected() {
+            var el = getSelected(); if (!el) return;
+            if (!confirm('DİQQƏT: Bu istifadəçi HƏMİŞƏLİK silinəcək. Əminsiniz?')) return;
+            var form = document.getElementById('toggleForm');
+            form.action = el.dataset.delete;
+            form.submit();
+        }
+</script>
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - FHN TTNDA</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="app-shell">
+        <aside class="app-sidebar">
+            <div class="brand">
+                <img src="~/images/fhn_loqo.webp" alt="FHN TTNDA" class="brand-logo-img" />
+                <div class="brand-text">
+                    <div class="brand-title">TTNDA</div>
+                    <div class="brand-subtitle">Proqram Təminatı</div>
+                </div>
+            </div>
+
+            @await Component.InvokeAsync("Sidebar")
+
+            <div class="sidebar-footer">
+                <button class="sidebar-footer-icon-btn" type="button" id="themeToggleBtn" title="Tünd tema">
+                    <span id="themeIcon">&#127769;</span>
+                </button>
+                <form asp-controller="Account" asp-action="Logout" method="post" style="margin:0;">
+                    <button class="sidebar-footer-icon-btn sidebar-footer-icon-btn-danger" type="submit" title="Çıxış">
+                        &#10162;
+                    </button>
+                </form>
+            </div>
+
+        </aside>
+
+        <div class="app-main">
+            <header class="app-header">
+                <h1 class="page-title">@ViewData["Title"]</h1>  
+                @* <button class="bell-btn" type="button" aria-label="Bildirişlər">&#128276;</button> *@
+            </header>
+
+            @if (TempData["Success"] is string successMsg)
+            {
+                <div class="alert alert-success" id="successAlert">✓ @successMsg</div>
+            }
+            @if (TempData["Error"] is string errorMsg)
+            {
+                <div class="alert alert-danger">⚠ @errorMsg</div>
+            }
+
+            <main class="app-content">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,9 @@
+@model UserEditViewModel
+@{
+    ViewData["Title"] = "Yeni istifadəçi";
+}
+<div class="panel">
+    <form asp-action="Create" method="post">
+        @Html.Partial("_Form", Model)
+    </form>
+</div>

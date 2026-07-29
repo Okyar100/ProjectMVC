@@ -1,0 +1,64 @@
+@model LoginViewModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Giriş";
+}
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giriş - FHN TTNDA</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="login-shell">
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="~/images/fhn_loqo.webp" alt="FHN TTNDA" class="login-logo-img" />
+                <div class="login-title">FHN TTNDA</div>
+                <div class="login-subtitle">Proqram Təminatı Test</div>
+            </div>
+
+            <form asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                <div asp-validation-summary="ModelOnly" class="field-error"></div>
+
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label asp-for="UserNameOrEmail"></label>
+                    <input asp-for="UserNameOrEmail" id="finKodLogin" maxlength="7" autofocus />
+                    <span asp-validation-for="UserNameOrEmail" class="field-error"></span>
+                </div>
+
+                <div class="form-group" style="margin-bottom:14px;">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" />
+                    <span asp-validation-for="Password" class="field-error"></span>
+                </div>
+
+                <div class="form-group" style="flex-direction:row; align-items:center; gap:8px; margin-bottom:10px;">
+                    <input asp-for="RememberMe" style="width:auto;" />
+                    <label asp-for="RememberMe" style="font-weight:400;"></label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Daxil ol</button>
+            </form>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var finInput = document.getElementById("finKodLogin");
+                if (finInput) {
+                    finInput.addEventListener("input", function () {
+                        var cursorPos = finInput.selectionStart;
+                        finInput.value = finInput.value.toUpperCase();
+                        finInput.setSelectionRange(cursorPos, cursorPos);
+                    });
+                }
+            });
+    </script>
+</body>
+</html>
